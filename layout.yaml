@@ -1,0 +1,75 @@
+version: ~1
+title: The example of Layout which demostrates almost all features of layout
+
+default:
+- var: year
+  default: 2022
+
+- var: owner
+  default: "community"
+
+prompts:
+- label: Project name
+  var: project_name
+  default: "{{.dirname}}" # by default use destination dir name as project name which is pretty common
+
+- label: Project license
+  var: license
+  options:
+  - MIT
+  - Apache 2.0
+  - MPL-2.0
+  - Proprietary
+  default: Apache 2.0
+
+- include: copyright.yaml
+  when: license != "MPL-2.0"
+
+- label: CSS frawmework
+  var: framework
+  options:
+  - mvp.css
+  - water.css
+  - new.css
+  default: water.css
+
+- label: Features
+  var: features
+  type: list
+  options:
+  - JS
+  - CSS
+  - Images
+  
+computed:
+- var: slug
+  value: "{{.owner}}-{{.project_name}}"
+
+before:
+- label: Copy license # copy before render, since we have placeholders in templates
+  run: |
+    cp 'licenses/{{.license}}' LICENSE
+    rm -rf licenses
+
+after:
+- label: Remove CSS dir
+  run: rm -rf static/css
+  when: '!has(features, "CSS")'
+
+- label: Remove JS dir
+  run: rm -rf static/js
+  when: '!has(features, "JS")'
+
+- label: Remove images dir
+  run: rm -rf static/img
+  when: '!has(features, "Images")'
+
+- label: Remove static dir
+  run: rm -rf static
+  when: len(features) == 0
+
+- label: Demo post-generate hook
+  script: hooks/info.sh
+
+ignore:
+- "**/*.css" # we do not want to process CSS files as template

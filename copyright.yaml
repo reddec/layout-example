@@ -1,0 +1,7 @@
+- label: Copyright year
+  var: year
+  type: int
+  default: 2022
+
+- label: Copyright owner
+  var: owner

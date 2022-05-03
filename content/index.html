@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{- if eq .framework "mvp.css"}}
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    {{- else if eq .framework "new.css"}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1/new.min.css">
+    <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+    {{- else if eq .framework "water.css"}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    {{- end}}
+
+    {{- if .features | has ("CSS")}}
+    <link rel="stylesheet" href="static/css/main.css">
+    {{- end}}
+    {{- if .features | has ("JS")}}
+    <script src="static/js/main.js"></script>
+    {{- end}}
+</head>
+
+<body>
+    <h1>{{.project_name}}</h1>
+    <p>Hello world!</p>
+    <small>{{.slug}}</small>
+    <footer>
+        {{.license}} Copyright {{.owner}} {{.year}}
+    </footer>
+</body>
+
+</html>
